@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume & Job Match AI</title>
+    <script src="https://unpkg.com/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f9ff;
+        }
+        .custom-shadow {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-8">
+    <main class="max-w-4xl mx-auto bg-white rounded-lg custom-shadow p-6">
+        <h1 class="text-3xl font-bold text-center text-sky-700 mb-8">Resume & Job Description Analyzer</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Resume Input -->
+            <div class="space-y-4">
+                <h2 class="text-xl font-semibold text-sky-600">Upload Resume</h2>
+                <textarea id="resumeInput" class="w-full h-64 p-4 border border-sky-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500" placeholder="Paste your resume text here..."></textarea>
+            </div>
+            
+            <!-- Job Description Input -->
+            <div class="space-y-4">
+                <h2 class="text-xl font-semibold text-sky-600">Job Description</h2>
+                <textarea id="jobInput" class="w-full h-64 p-4 border border-sky-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500" placeholder="Paste the job description here..."></textarea>
+            </div>
+        </div>
+
+        <div class="flex justify-center gap-4 mt-8">
+            <button onclick="generateRoles()" class="bg-sky-600 hover:bg-sky-700 text-white px-6 py-3 rounded-lg transition-colors">
+                <i class="bi bi-gear-fill mr-2"></i>Generate Roles
+            </button>
+            <button onclick="matchResume()" class="bg-sky-600 hover:bg-sky-700 text-white px-6 py-3 rounded-lg transition-colors">
+                <i class="bi bi-check2-circle mr-2"></i>Match & Optimize Resume
+            </button>
+        </div>
+
+        <!-- Results Section -->
+        <div id="results" class="mt-8 p-6 bg-sky-50 rounded-lg hidden">
+            <h3 class="text-xl font-semibold text-sky-700 mb-4">Results</h3>
+            <div id="resultContent" class="prose max-w-none"></div>
+        </div>
+    </main>
+
+    <script>
+        function generateRoles() {
+            const jobDescription = document.getElementById('jobInput').value;
+            if (!jobDescription.trim()) {
+                alert('Please enter a job description');
+                return;
+            }
+
+            // AI analysis simulation
+            const roles = analyzeAndGenerateRoles(jobDescription);
+            displayResults(roles, 'Generated Roles & Responsibilities');
+        }
+
+        function matchResume() {
+            const resume = document.getElementById('resumeInput').value;
+            const jobDescription = document.getElementById('jobInput').value;
+
+            if (!resume.trim() || !jobDescription.trim()) {
+                alert('Please enter both resume and job description');
+                return;
+            }
+
+            // AI matching simulation
+            const optimizedResume = matchAndOptimizeResume(resume, jobDescription);
+            displayResults(optimizedResume, 'Optimized Resume');
+        }
+
+        function analyzeAndGenerateRoles(jobDescription) {
+            // This is a simplified simulation of AI analysis
+            const keywords = jobDescription.toLowerCase().match(/\b\w+\b/g) || [];
+            const commonSkills = ['develop', 'manage', 'create', 'analyze', 'implement', 'coordinate'];
+            
+            let roles = "Key Responsibilities:\n\n";
+            commonSkills.forEach(skill => {
+                if (keywords.includes(skill)) {
+                    roles += `• ${capitalizeFirstLetter(skill)} and maintain ${generateContext()}\n`;
+                }
+            });
+
+            return roles + "\nNote: These responsibilities are AI-generated based on the job description analysis.";
+        }
+
+        function matchAndOptimizeResume(resume, jobDescription) {
+            // This is a simplified simulation of resume optimization
+            const jobKeywords = jobDescription.toLowerCase().match(/\b\w+\b/g) || [];
+            const resumeLines = resume.split('\n');
+            
+            let optimizedResume = "Optimized Resume:\n\n";
+            
+            resumeLines.forEach(line => {
+                if (line.trim()) {
+                    const lineKeywords = line.toLowerCase().match(/\b\w+\b/g) || [];
+                    const matches = lineKeywords.filter(word => jobKeywords.includes(word));
+                    
+                    if (matches.length > 0) {
+                        optimizedResume += `${line} [Matched]\n`;
+                    } else {
+                        optimizedResume += `${line}\n`;
+                    }
+                }
+            });
+
+            return optimizedResume + "\nNote: This is an AI-optimized version of your resume.";
+        }
+
+        function displayResults(content, title) {
+            const resultsDiv = document.getElementById('results');
+            const resultContent = document.getElementById('resultContent');
+            
+            resultContent.innerHTML = `
+                <h4 class="font-semibold text-lg mb-4">${title}</h4>
+                <div class="whitespace-pre-wrap">${content}</div>
+            `;
+            
+            resultsDiv.classList.remove('hidden');
+        }
+
+        function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+
+        function generateContext() {
+            const contexts = [
+                "project deliverables",
+                "team objectives",
+                "technical documentation",
+                "client relationships",
+                "system infrastructure",
+                "business processes"
+            ];
+            return contexts[Math.floor(Math.random() * contexts.length)];
+        }
+    </script>
+<script>document.body.addEventListener('wheel', e => { if (!e.ctrlKey) return; e.preventDefault(); return }, { passive: false })</script>
+	</body>
+</html>
